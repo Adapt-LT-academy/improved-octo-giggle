@@ -4,7 +4,9 @@
 namespace App\Service;
 
 use BotMan\BotMan\Messages\Conversations\Conversation;
-use BotMan\BotMan\Messages\Incoming\Answer;
+use BotMan\BotMan\Messages\Incoming\IncomingMessage;
+use BotMan\BotMan\Messages\Outgoing\Actions\Button;
+use BotMan\BotMan\Messages\Outgoing\Question;
 
 /**
  * Class PizzaOrderConversation
@@ -12,83 +14,66 @@ use BotMan\BotMan\Messages\Incoming\Answer;
 class PizzaOrderConversation extends Conversation
 {
 
-    /**
-     * @var string
-     */
     protected $size;
 
-    /**
-     * @var string
-     */
     protected $topping;
 
-    /**
-     * @var string
-     */
-    protected $secondTopping;
+    protected $address;
 
-    /**
-     *
-     */
-    public function askSize()
+    public function run()
     {
+        $question = Question::create('What Pizza size do you want?');
+        $question->addButtons(
+            [
+                Button::create('Supersize')->value('XXL'),
+                Button::create('Large')->value('L'),
+            ]
+        );
         $this->ask(
-            'Hello! What size of pizza do you want?',
-            function (Answer $answer) {
-                // Save result
+            $question,
+            function ($answer) {
                 $this->size = $answer->getText();
-
                 $this->askTopping();
             }
         );
     }
 
-    /**
-     *
-     */
     public function askTopping()
     {
+        $question = Question::create('What topping do you want?');
+        $question->addButtons(
+            [
+                Button::create('🌭')->value('Hot Dog'),
+                Button::create('🍔')->value('Burger'),
+                Button::create('🍟')->value('Fries'),
+            ]
+        );
         $this->ask(
-            'What main topping do you want?',
-            function (Answer $answer) {
-                // Save result
+            $question,
+            function ($answer) {
                 $this->topping = $answer->getText();
-
-                $this->askSecondTopping();
+                $this->askAddress();
             }
         );
     }
 
-    /**
-     *
-     */
-    public function askSecondTopping()
+    public function askAddress()
     {
         $this->ask(
-            'What second topping do you want?',
-            function (Answer $answer) {
-                // Save result
-                $this->secondTopping = $answer->getText();
-
-                $this->say(
-                    sprintf(
-                        'Nice choice: Size: %s, Main topping: %s, Second topping: %s ',
-                        $this->size,
-                        $this->topping,
-                        $this->secondTopping
-                    )
-                );
+            'Where can we deliver your tasty pizza?',
+            function ($answer) {
+                $this->address = $answer->getText();
+                $this->say('Okay. That is all I need.');
+                $this->say('Size: '.$this->size);
+                $this->say('Topping: '.$this->topping);
+                $this->say('Delivery address: '.$this->address);
             }
         );
-
     }
 
-    /**
-     * @return mixed
-     */
-    public function run()
+    public function stopConversation(IncomingMessage $message)
     {
-        $this->askSize();
+        return $message->getMessage() === 'stop';
     }
 
 }

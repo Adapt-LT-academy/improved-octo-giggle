@@ -18,11 +18,19 @@ class BotManController extends Controller
 {
 
     /**
-     * @Route(path="/", methods={"GET"}, name="botman")
+     * @Route(path="/chat", methods={"GET"}, name="botman")
      */
     public function botMan()
     {
         return $this->render('botman.html.twig');
+    }
+
+    /**
+     * @Route(path="/", methods={"GET"}, name="botmanChat")
+     */
+    public function botManChat()
+    {
+        return $this->render('chat.html.twig');
     }
 
     /**
