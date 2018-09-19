@@ -3,16 +3,20 @@
 
 namespace App\Service;
 
+use App\Traits\ContainerAwareConversationTrait;
 use BotMan\BotMan\Messages\Conversations\Conversation;
 use BotMan\BotMan\Messages\Incoming\IncomingMessage;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Outgoing\Question;
+use App\Service\OptionsService;
 
 /**
  * Class PizzaOrderConversation
  */
 class PizzaOrderConversation extends Conversation
 {
+
+    use ContainerAwareConversationTrait;
 
     protected $size;
 
@@ -22,12 +26,18 @@ class PizzaOrderConversation extends Conversation
 
     public function run()
     {
+        $toppings = $this->getContainer()->get(OptionsService::class)->getToppings();
+
+        $buttons = [];
+
+        foreach ($toppings as $topping)
+        {
+            $buttons[] = Button::create($topping->getName())->value($topping->getId());
+        }
+
         $question = Question::create('What Pizza size do you want?');
         $question->addButtons(
-            [
-                Button::create('Supersize')->value('XXL'),
-                Button::create('Large')->value('L'),
-            ]
+            $buttons
         );
         $this->ask(
             $question,

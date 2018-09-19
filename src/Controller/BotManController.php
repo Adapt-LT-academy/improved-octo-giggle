@@ -46,6 +46,7 @@ class BotManController extends Controller
         $botman = BotManFactory::create([], new SymfonyCache($adapter)); //No config options required
         //Setup DialogFlow middleware
         $dialogflow = ApiAi::create('s0meRand0mT0ken')->listenForAction();
+
         $botman->middleware->received($dialogflow);
         // Give the bot some things to listen for.
         $botman->hears(
@@ -54,6 +55,8 @@ class BotManController extends Controller
                 $bot->startConversation(new PizzaOrderConversation);
             }
         );
+
+        $botman->userStorage();
 
         $botman->hears(
             'stop',

@@ -7,10 +7,12 @@
         "ext-iconv": "*",
         "botman/botman": "^2.4",
         "botman/driver-web": "^1.5",
+        "doctrine/orm": "^2.6",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/console": "*",
         "symfony/flex": "^1.1",
         "symfony/framework-bundle": "*",
+        "symfony/orm-pack": "^1.0",
         "symfony/twig-bundle": "*",
         "symfony/web-server-bundle": "*",
         "symfony/yaml": "*"
