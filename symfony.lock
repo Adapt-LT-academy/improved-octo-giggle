@@ -1,9 +1,30 @@
 {
+    "behat/gherkin": {
+        "version": "v4.5.1"
+    },
     "botman/botman": {
         "version": "2.4.1"
     },
     "botman/driver-web": {
         "version": "1.5.1"
+    },
+    "codeception/c3": {
+        "version": "2.4.1"
+    },
+    "codeception/codeception": {
+        "version": "2.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.3",
+            "ref": "d2a29c0abee586aff913fd45fae1f59b669f4cbe"
+        }
+    },
+    "codeception/phpunit-wrapper": {
+        "version": "7.3.0"
+    },
+    "codeception/stub": {
+        "version": "2.0.4"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -74,8 +95,26 @@
     "evenement/evenement": {
         "version": "v3.0.1"
     },
+    "facebook/webdriver": {
+        "version": "1.6.0"
+    },
+    "guzzlehttp/guzzle": {
+        "version": "6.3.3"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.4.2"
+    },
+    "hamcrest/hamcrest-php": {
+        "version": "v2.0.0"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "mockery/mockery": {
+        "version": "1.1.0"
     },
     "mpociot/pipeline": {
         "version": "1.0.2"
@@ -94,6 +133,9 @@
     },
     "psr/container": {
         "version": "1.0.0"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
     },
     "psr/log": {
         "version": "1.0.2"
@@ -134,6 +176,9 @@
     "spatie/macroable": {
         "version": "1.0.0"
     },
+    "symfony/browser-kit": {
+        "version": "v4.1.4"
+    },
     "symfony/cache": {
         "version": "v4.1.4"
     },
@@ -149,6 +194,9 @@
             "ref": "e3868d2f4a5104f19f844fe551099a00c6562527"
         }
     },
+    "symfony/css-selector": {
+        "version": "v4.1.4"
+    },
     "symfony/debug": {
         "version": "v4.1.4"
     },
@@ -156,6 +204,9 @@
         "version": "v4.1.4"
     },
     "symfony/doctrine-bridge": {
+        "version": "v4.1.4"
+    },
+    "symfony/dom-crawler": {
         "version": "v4.1.4"
     },
     "symfony/dotenv": {
