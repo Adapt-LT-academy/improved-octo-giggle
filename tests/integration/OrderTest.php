@@ -9,7 +9,7 @@ use App\Entity\Size;
 use App\Entity\Topping;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class ProductRepositoryTest extends KernelTestCase
+class OrderTest extends KernelTestCase
 {
   /**
    * @var \Doctrine\ORM\EntityManager
@@ -28,7 +28,10 @@ class ProductRepositoryTest extends KernelTestCase
       ->getManager();
   }
 
-  public function testSearchByCategoryName()
+  /**
+   * Testing order total calculation.
+   */
+  public function testOrderTotal()
   {
     /**
      * @var Topping $main
