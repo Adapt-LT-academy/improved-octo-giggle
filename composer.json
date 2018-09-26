@@ -18,6 +18,11 @@
         "symfony/yaml": "*"
     },
     "require-dev": {
+        "codeception/c3": "^2.4",
+        "codeception/codeception": "^2.4",
+        "doctrine/doctrine-fixtures-bundle": "^3.0",
+        "mockery/mockery": "^1.1",
+        "phpunit/phpunit": "^7.3",
         "symfony/dotenv": "*"
     },
     "config": {
