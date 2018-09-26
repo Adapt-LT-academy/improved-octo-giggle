@@ -36,26 +36,22 @@ jobs:
     - run:
         name: Add database migrations
         command: bin/console doctrine:schema:create -n
-#    - run:
-#        name:  Download cc-test-reporter
-#        command: |
-#          mkdir -p tmp/
-#          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
-#          chmod +x ./tmp/cc-test-reporter
-#    - run:
-#        name: Run unit tests
-#        command: |
-#          vendor/bin/phpunit --verbose --debug --coverage-clover clover.xml
-#          ./tmp/cc-test-reporter format-coverage --input-type clover -o tmp/codeclimate.unit.json coverage/unit/.resultset.json
+    - run:
+        name:  Download cc-test-reporter
+        command: |
+          mkdir -p tmp/
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+          chmod +x ./tmp/cc-test-reporter
     - run:
         name: Run unit tests
         command: |
-          vendor/bin/phpunit --verbose
-#    - persist_to_workspace:
-#        root: tmp
-#        paths:
-#        - codeclimate.unit.json
-#        - cc-test-reporter
+          vendor/bin/phpunit --verbose --debug --coverage-clover clover.xml
+          ./tmp/cc-test-reporter format-coverage --input-type clover -o tmp/codeclimate.unit.json coverage/unit/.resultset.json
+    - persist_to_workspace:
+        root: tmp
+        paths:
+        - codeclimate.unit.json
+        - cc-test-reporter
   api-tests:
     docker:
     - image: wodby/php:7.2-dev-4.5.3
@@ -79,8 +75,8 @@ jobs:
         MYSQL_PASSWORD: botman
     steps:
     - checkout
-#    - attach_workspace:
-#        at: ~/project/tmp
+    - attach_workspace:
+        at: ~/project/tmp
     - restore_cache:
         keys:
         - composer-v1-{{ checksum "composer.json" }}
@@ -103,18 +99,14 @@ jobs:
     - run:
         name: Run codeception API tests
         command: |
-          vendor/bin/codecept run --steps
-#    - run:
-#        name: Run codeception API tests
-#        command: |
-#          vendor/bin/codecept run --steps --coverage --coverage-xml
-#          cp tests/codeception/_output/api.remote.coverage.xml clover.xml
-#          ./tmp/cc-test-reporter format-coverage --input-type clover -o tmp/codeclimate.api.json coverage/api/.resultset.json
-#    - run:
-#        name: Upload coverage results to Code Climate
-#        command: |
-#          ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
-#          ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+          vendor/bin/codecept run --steps --coverage --coverage-xml
+          cp tests/codeception/_output/api.remote.coverage.xml clover.xml
+          ./tmp/cc-test-reporter format-coverage --input-type clover -o tmp/codeclimate.api.json coverage/api/.resultset.json
+    - run:
+        name: Upload coverage results to Code Climate
+        command: |
+          ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+          ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
 
 workflows:
   version: 2
