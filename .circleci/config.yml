@@ -5,17 +5,23 @@ jobs:
     docker:
     - image: wodby/php:7.2-dev-4.5.3
       environment:
-      - MYSQL_HOST=127.0.0.1
-      - DATABASE_URL=mysql://botman:botman@mariadb:3306/botman
-    - image: wodby/mariadb:10.3-3.3.4
+        DB_HOST: mariadb
+        DB_USER: botman
+        DB_PASSWORD: botman
+        DB_NAME: botman
+        ## Read instructions at https://wodby.com/stacks/php/docs/local/xdebug/
+        PHP_XDEBUG: 1
+        PHP_XDEBUG_DEFAULT_ENABLE: 1
+        PHP_XDEBUG_REMOTE_CONNECT_BACK: 0
+        PHP_IDE_CONFIG: serverName=PHPSTORM
+        PHP_XDEBUG_REMOTE_HOST: 172.17.0.1 # Linux
+        DATABASE_URL: mysql://botman:botman@mariadb:3306/botman
+    - image: circleci/mysql:5.7-ram
       environment:
-      - MYSQL_USER=botman
-      - DB_NAME=botman
-      - DB_USER=botman
-      - DB_PASSWORD=botman
-      - DB_ROOT_PASSWORD=password
-      - DB_HOST=mariadb
-      - DB_DRIVER=mysql
+        MYSQL_ROOT_PASSWORD: botman
+        MYSQL_DATABASE: botman
+        MYSQL_USER: botman
+        MYSQL_PASSWORD: botman
     steps:
     - checkout
     - restore_cache:
@@ -26,6 +32,7 @@ jobs:
         key: composer-v1-{{ checksum "composer.json" }}
         paths:
         - vendor
+    - run: echo 127.0.0.1 mariadb | sudo tee -a /etc/hosts
     - run:
         name: Add database migrations
         command: bin/console doctrine:schema:create -n
@@ -44,28 +51,33 @@ jobs:
         name: Run unit tests
         command: |
           vendor/bin/phpunit --verbose
-    - persist_to_workspace:
-        root: tmp
-        paths:
-        - codeclimate.unit.json
-        - cc-test-reporter
+#    - persist_to_workspace:
+#        root: tmp
+#        paths:
+#        - codeclimate.unit.json
+#        - cc-test-reporter
   api-tests:
     docker:
     - image: wodby/php:7.2-dev-4.5.3
       environment:
-      - MYSQL_HOST=127.0.0.1
-      - DATABASE_URL=mysql://botman:botman@mariadb:3306/botman
-    - image: wodby/mariadb:10.3-3.3.4
+        DB_HOST: mariadb
+        DB_USER: botman
+        DB_PASSWORD: botman
+        DB_NAME: botman
+        ## Read instructions at https://wodby.com/stacks/php/docs/local/xdebug/
+        PHP_XDEBUG: 1
+        PHP_XDEBUG_DEFAULT_ENABLE: 1
+        PHP_XDEBUG_REMOTE_CONNECT_BACK: 0
+        PHP_IDE_CONFIG: serverName=PHPSTORM
+        PHP_XDEBUG_REMOTE_HOST: 172.17.0.1 # Linux
+        DATABASE_URL: mysql://botman:botman@mariadb:3306/botman
+    - image: circleci/mysql:5.7-ram
       environment:
-      - MYSQL_USER=botman
-      - DB_NAME=botman
-      - DB_USER=botman
-      - DB_PASSWORD=botman
-      - DB_ROOT_PASSWORD=password
-      - DB_HOST=mariadb
-      - DB_DRIVER=mysql
+        MYSQL_ROOT_PASSWORD: botman
+        MYSQL_DATABASE: botman
+        MYSQL_USER: botman
+        MYSQL_PASSWORD: botman
     steps:
-
     - checkout
 #    - attach_workspace:
 #        at: ~/project/tmp
@@ -77,6 +89,7 @@ jobs:
         key: composer-v1-{{ checksum "composer.json" }}
         paths:
         - vendor
+    - run: echo 127.0.0.1 mariadb | sudo tee -a /etc/hosts
     - run:
         name: Add database migrations
         command: bin/console doctrine:schema:create -n
