@@ -37,6 +37,9 @@ jobs:
         name: Add database migrations
         command: bin/console doctrine:schema:create -n
     - run:
+        name: Add fixtures
+        command: bin/console doctrine:fixtures:load -n
+    - run:
         name:  Download cc-test-reporter
         command: |
           mkdir -p tmp/
@@ -89,6 +92,9 @@ jobs:
     - run:
         name: Add database migrations
         command: bin/console doctrine:schema:create -n
+    - run:
+        name: Add fixtures
+        command: bin/console doctrine:fixtures:load -n
     - run:
         name: Start local webserver
         command: sudo php -S localhost:80 -t public
