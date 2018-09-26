@@ -25,7 +25,7 @@ class SizeFixtures extends Fixture{
       ],
       [
         'name' => 'XL',
-        'price' => 100,
+        'price' => 1000,
       ],
     ];
 
