@@ -4,12 +4,12 @@
 # Perform tests in browser using the WebDriver or PhpBrowser.
 # If you need both WebDriver and PHPBrowser tests - create a separate suite.
 
-actor: ApiTester
+actor: APITester
 path: .
 modules:
   enabled:
   - REST:
-      url: http://127.0.0.1:8000/
+      url: http://127.0.0.1/
       depends: PhpBrowser
   - Symfony:
       part: SERVICES
