@@ -1,13 +1,45 @@
-namespace: App\Tests
+
+suites:
+    api:
+        actor: ApiTester
+        path: .
+        modules:
+            enabled:
+            - REST:
+                  url: http://127.0.0.1/
+                  depends: PhpBrowser
+            - Symfony:
+                  part: SERVICES
+                  app_path: 'src'
+            - Asserts
+
 paths:
-    tests: tests
-    output: tests/_output
-    data: tests/_data
-    support: tests/_support
-    envs: tests/_envs
+    output: tests/codeception/_output
+    data: tests/codeception/_data
+    support: tests/codeception/_support
+    envs: tests/codeception/_envs
+    tests: tests/api
+
 actor_suffix: Tester
 extensions:
     enabled:
         - Codeception\Extension\RunFailed
 params:
     - .env
+coverage:
+    enabled: true
+    remote: true
+    remote_config: codeception.yml
+    include:
+    - src/*
+    exclude:
+    - src/Migrations/*
+    - src/DataFixtures/*
+
+
+
+
+
+
+
+

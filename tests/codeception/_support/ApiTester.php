@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Tests;
-
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -17,10 +15,10 @@ namespace App\Tests;
  *
  * @SuppressWarnings(PHPMD)
  */
-class APITester extends \Codeception\Actor
+class ApiTester extends \Codeception\Actor
 {
 
-    use _generated\APITesterActions;
+    use \_generated\ApiTesterActions;
 
     protected $userId;
 
