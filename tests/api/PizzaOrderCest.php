@@ -1,15 +1,15 @@
 <?php
 
 
-namespace App\Tests\functional;
+namespace App\Tests\Api;
 
 
-use App\Tests\APITester;
+use \ApiTester;
 
 class PizzaOrderCest
 {
 
-    public function getResponse(APITester $I)
+    public function getResponse(ApiTester $I)
     {
         $I->wantTo('Check if botman message endpoint responds');
         $I->sendBotMessage('message', 'Hi');

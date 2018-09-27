@@ -80,6 +80,7 @@ jobs:
         PHP_IDE_CONFIG: serverName=PHPSTORM
         PHP_XDEBUG_REMOTE_HOST: 172.17.0.1 # Linux
         DATABASE_URL: mysql://botman:botman@mariadb:3306/botman
+        CC_TEST_REPORTER_ID: $CC_TEST_REPORTER_ID
     - image: circleci/mysql:5.7-ram
       environment:
         MYSQL_ROOT_PASSWORD: botman
@@ -128,11 +129,11 @@ jobs:
           vendor/bin/codecept run --steps --coverage --coverage-xml
           cp tests/codeception/_output/api.remote.coverage.xml clover.xml
           ./tmp/cc-test-reporter format-coverage --input-type clover -o tmp/codeclimate.api.json coverage/api/.resultset.json
-    - run:
-        name: Upload coverage results to Code Climate
-        command: |
-          ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
-          ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+#    - run:
+#        name: Upload coverage results to Code Climate
+#        command: |
+#          ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+#          ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
 
 workflows:
   version: 2
