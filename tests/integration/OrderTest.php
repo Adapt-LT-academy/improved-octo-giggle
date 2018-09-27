@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Tests\integration;
 
 use App\Entity\Drink;
