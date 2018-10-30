@@ -25,14 +25,14 @@ class Topping
      *
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=20)
      */
-    protected $type;
+    protected $type = '';
 
     /**
      * @var int

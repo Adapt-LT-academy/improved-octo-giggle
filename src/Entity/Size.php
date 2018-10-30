@@ -25,7 +25,7 @@ class Size
      *
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @var int

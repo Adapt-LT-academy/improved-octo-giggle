@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,32 +22,35 @@ class Order
     protected $id;
 
     /**
-     * One Order has One main Topping.
-     * @ORM\OneToOne(targetEntity="Topping")
+     * Many Orders has One main Topping.
+     * @ORM\ManyToOne(targetEntity="Topping")
      * @ORM\JoinColumn(name="main_topping_id", referencedColumnName="id")
      */
     protected $mainTopping;
 
     /**
-     * One Order has One secondary Topping.
-     * @ORM\OneToOne(targetEntity="Topping")
+     * Many Orders has One secondary Topping.
+     * @ORM\ManyToOne(targetEntity="Topping")
      * @ORM\JoinColumn(name="secondary_topping_id", referencedColumnName="id")
      */
     protected $secondaryTopping;
 
     /**
-     * One Order has One Size.
-     * @ORM\OneToOne(targetEntity="Size")
+     * Many Orders has One Size.
+     * @ORM\ManyToOne(targetEntity="Size")
      * @ORM\JoinColumn(name="size_id", referencedColumnName="id")
      */
     protected $size;
 
     /**
-     * One Order has One Drink.
-     * @ORM\OneToOne(targetEntity="Drink")
-     * @ORM\JoinColumn(name="drink_id", referencedColumnName="id")
+     * Many Orders have Many Drinks.
+     * @ORM\ManyToMany(targetEntity="Drink")
+     * @ORM\JoinTable(name="order_drinks",
+     *      joinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="drink_id", referencedColumnName="id")}
+     *      )
      */
-    protected $drink;
+    protected $drinks;
 
     /**
      * @var int
@@ -54,6 +58,10 @@ class Order
      * @ORM\Column(type="integer", length=11)
      */
     protected $total = 0;
+
+    public function __construct() {
+        $this->drinks = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * @return int
@@ -136,11 +144,11 @@ class Order
     }
 
     /**
-     * @return Drink
+     * @return ArrayCollection
      */
-    public function getDrink(): ?Drink
+    public function getDrinks(): ?ArrayCollection
     {
-      return $this->drink;
+      return $this->drinks;
     }
 
     /**
@@ -148,9 +156,9 @@ class Order
      *
      * @return $this
      */
-    public function setDrink(Drink $drink): self
+    public function addDrink(Drink $drink): self
     {
-      $this->drink = $drink;
+      $this->drinks[] = $drink;
 
       return $this;
     }
@@ -182,13 +190,17 @@ class Order
       $mainTopping = $this->getMainTopping();
       $secondaryTopping = $this->getSecondaryTopping();
       $size = $this->getSize();
-      $drink = $this->getDrink();
+      $drinks = $this->getDrinks();
+      $drinkPrices = 0;
+      foreach ($drinks as $drink) {
+          $drinkPrices += $drink->getPrice();
+      }
 
       $total =
         $mainTopping->getPrice() +
         $secondaryTopping->getPrice() +
         $size->getPrice() +
-        $drink->getPrice();
+        $drinkPrices;
 
       $this->setTotal($total);
     }
