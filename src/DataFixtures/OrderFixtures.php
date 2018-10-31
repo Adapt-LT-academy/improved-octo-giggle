@@ -47,7 +47,10 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface{
       * @var Drink $drink
       */
      $drink = $this->getProduct(Drink::class, ['name' => 'Coke', 'size' => '2']);
-     $order->setDrink($drink);
+     $order->addDrink($drink);
+
+     $drink = $this->getProduct(Drink::class, ['name' => 'RedBull', 'size' => '2']);
+     $order->addDrink($drink);
 
      $order->calculateTotal();
      $manager->persist($order);

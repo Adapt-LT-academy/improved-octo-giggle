@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -25,21 +24,21 @@ class Drink
      *
      * @ORM\Column(type="string", length=255)
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=20)
      */
-    protected $type;
+    protected $type = '';
 
     /**
      * @var string
      *
      * @ORM\Column(type="string", length=20)
      */
-    protected $size;
+    protected $size = '';
 
     /**
      * @var int
