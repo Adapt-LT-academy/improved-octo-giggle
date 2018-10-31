@@ -196,11 +196,9 @@ class Order
           $drinkPrices += $drink->getPrice();
       }
 
-      $total =
-        $mainTopping->getPrice() +
-        $secondaryTopping->getPrice() +
-        $size->getPrice() +
-        $drinkPrices;
+      $toppings = bcadd($mainTopping->getPrice(), $secondaryTopping->getPrice());
+      $misc = bcadd($size->getPrice(), $drinkPrices);
+      $total = bcadd($toppings, $misc);
 
       $this->setTotal($total);
     }
