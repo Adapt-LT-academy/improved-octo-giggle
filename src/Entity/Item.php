@@ -31,6 +31,13 @@ class Item
     protected $type = '';
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=20)
+     */
+    protected $size = '';
+
+    /**
      * @var int
      *
      * @ORM\Column(type="integer", length=11)
@@ -93,6 +100,26 @@ class Item
     public function setType(string $type): self
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSize(): string
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param string $size
+     *
+     * @return $this
+     */
+    public function setSize(string $size): self
+    {
+        $this->size = $size;
 
         return $this;
     }

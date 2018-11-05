@@ -37,6 +37,7 @@ class SizeFixtures extends Fixture{
       $size = new Size();
       $size->setName($item['name']);
       $size->setPrice($item['price']);
+      $size->setType($item['type']);
       $manager->persist($size);
     }
 
