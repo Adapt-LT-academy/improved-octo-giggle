@@ -102,12 +102,10 @@ class Order
     /**
      * Add line item to order.
      *
-     * @param \Doctrine\Common\Persistence\ObjectManager $manager
-     *   Object manager.
-     * @param \App\Entity\Item                           $item
+     * @param \App\Entity\Item $item
      *   Item to add in order.
      */
-    public function addLineItemToOrder(ObjectManager $manager, Item $item): void {
+    public function addLineItemToOrder(Item $item): void {
         $lineItem = new LineItem();
         $lineItem->setSize($item->getSize());
         $lineItem->setType($item->getType());
