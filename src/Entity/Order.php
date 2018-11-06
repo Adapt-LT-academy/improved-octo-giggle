@@ -23,12 +23,8 @@ class Order
     protected $id;
 
     /**
-     * Many Orders have Many Items.
-     * @ORM\ManyToMany(targetEntity="LineItem")
-     * @ORM\JoinTable(name="order_line_items",
-     *      joinColumns={@ORM\JoinColumn(name="order_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="line_item_id", referencedColumnName="id")}
-     *      )
+     * One Order has Many Line Items.
+     * @ORM\OneToMany(targetEntity="LineItem", mappedBy="order", cascade={"persist"})
      */
     protected $items;
 
@@ -117,8 +113,7 @@ class Order
         $lineItem->setType($item->getType());
         $lineItem->setPrice($item->getPrice());
         $lineItem->setName($item->getName());
-        $manager->persist($lineItem);
-        $manager->flush();
+        $lineItem->setOrder($this);
         $this->addItem($lineItem);
     }
 
