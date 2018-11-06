@@ -13,18 +13,22 @@ class SizeFixtures extends Fixture{
     $sizes = [
       [
         'name' => 'S',
+        'type' => 'S',
         'price' => 200,
       ],
       [
         'name' => 'M',
+        'type' => 'M',
         'price' => 400,
       ],
       [
         'name' => 'L',
+        'type' => 'L',
         'price' => 800,
       ],
       [
         'name' => 'XL',
+        'type' => 'XL',
         'price' => 1000,
       ],
     ];
@@ -33,6 +37,7 @@ class SizeFixtures extends Fixture{
       $size = new Size();
       $size->setName($item['name']);
       $size->setPrice($item['price']);
+      $size->setType($item['type']);
       $manager->persist($size);
     }
 

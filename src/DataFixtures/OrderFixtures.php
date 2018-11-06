@@ -3,12 +3,15 @@
 namespace App\DataFixtures;
 
 use App\Entity\Drink;
+use App\Entity\Item;
+use App\Entity\LineItem;
 use App\Entity\Order;
 use App\Entity\Size;
 use App\Entity\Topping;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use SebastianBergmann\Diff\Line;
 
 class OrderFixtures extends Fixture implements DependentFixtureInterface{
 
@@ -29,28 +32,28 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface{
       * @var Topping $mainTopping
       */
      $mainTopping = $this->getProduct(Topping::class, ['name' => 'Ham']);
-     $order->setMainTopping($mainTopping);
+     $order->addLineItemToOrder($manager, $mainTopping);
 
      /**
       * @var Topping $secondaryTopping
       */
      $secondaryTopping = $this->getProduct(Topping::class, ['name' => 'Olive']);
-     $order->setSecondaryTopping($secondaryTopping);
+     $order->addLineItemToOrder($manager, $secondaryTopping);
 
      /**
       * @var Size $size
       */
      $size = $this->getProduct(Size::class, ['name' => 'M']);
-     $order->setSize($size);
+     $order->addLineItemToOrder($manager, $size);
 
      /**
       * @var Drink $drink
       */
      $drink = $this->getProduct(Drink::class, ['name' => 'Coke', 'size' => '2']);
-     $order->addDrink($drink);
+     $order->addLineItemToOrder($manager, $drink);
 
      $drink = $this->getProduct(Drink::class, ['name' => 'RedBull', 'size' => '2']);
-     $order->addDrink($drink);
+     $order->addLineItemToOrder($manager, $drink);
 
      $order->calculateTotal();
      $manager->persist($order);
