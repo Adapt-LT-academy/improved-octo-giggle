@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping as ORM;
-use SebastianBergmann\Diff\Line;
 
 /**
  * @ORM\Entity
@@ -104,23 +104,33 @@ class Order
     }
 
     /**
+     * Add line item to order.
+     *
+     * @param \Doctrine\Common\Persistence\ObjectManager $manager
+     *   Object manager.
+     * @param \App\Entity\Item                           $item
+     *   Item to add in order.
+     */
+    public function addLineItemToOrder(ObjectManager $manager, Item $item): void {
+        $lineItem = new LineItem();
+        $lineItem->setSize($item->getSize());
+        $lineItem->setType($item->getType());
+        $lineItem->setPrice($item->getPrice());
+        $lineItem->setName($item->getName());
+        $manager->persist($lineItem);
+        $manager->flush();
+        $this->addItem($lineItem);
+    }
+
+    /**
      * Calculate and set order total using it's products.
      */
     public function calculateTotal() {
-//      $mainTopping = $this->getMainTopping();
-//      $secondaryTopping = $this->getSecondaryTopping();
-//      $size = $this->getSize();
-//      $drinks = $this->getDrinks();
-//      $drinkPrices = 0;
-//      foreach ($drinks as $drink) {
-//          $drinkPrices += $drink->getPrice();
-//      }
-//
-//      $toppings = bcadd($mainTopping->getPrice(), $secondaryTopping->getPrice());
-//      $misc = bcadd($size->getPrice(), $drinkPrices);
-//      $total = bcadd($toppings, $misc);
-//
-//      $this->setTotal($total);
+      $total = 0;
+      foreach ($this->items as $item) {
+          $total = bcadd($total, $item->getPrice());
+      }
+      $this->setTotal($total);
     }
 
 }

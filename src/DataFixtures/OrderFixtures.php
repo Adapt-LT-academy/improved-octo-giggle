@@ -32,47 +32,32 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface{
       * @var Topping $mainTopping
       */
      $mainTopping = $this->getProduct(Topping::class, ['name' => 'Ham']);
-     $this->addLineItemToOrder($order, $mainTopping);
+     $order->addLineItemToOrder($manager, $mainTopping);
 
      /**
       * @var Topping $secondaryTopping
       */
      $secondaryTopping = $this->getProduct(Topping::class, ['name' => 'Olive']);
-     $this->addLineItemToOrder($order, $secondaryTopping);
+     $order->addLineItemToOrder($manager, $secondaryTopping);
 
      /**
       * @var Size $size
       */
      $size = $this->getProduct(Size::class, ['name' => 'M']);
-     $this->addLineItemToOrder($order, $size);
+     $order->addLineItemToOrder($manager, $size);
 
      /**
       * @var Drink $drink
       */
      $drink = $this->getProduct(Drink::class, ['name' => 'Coke', 'size' => '2']);
-     $this->addLineItemToOrder($order, $drink);
+     $order->addLineItemToOrder($manager, $drink);
 
      $drink = $this->getProduct(Drink::class, ['name' => 'RedBull', 'size' => '2']);
-     $this->addLineItemToOrder($order, $drink);
+     $order->addLineItemToOrder($manager, $drink);
 
-     //$order->calculateTotal();
+     $order->calculateTotal();
      $manager->persist($order);
      $manager->flush();
-  }
-
-  /**
-   * @param \App\Entity\Order $order
-   * @param \App\Entity\Item  $item
-   */
-  private function addLineItemToOrder(Order $order, Item $item) {
-    $lineItem = new LineItem();
-    $lineItem->setSize($item->getSize());
-    $lineItem->setType($item->getType());
-    $lineItem->setPrice($item->getPrice());
-    $lineItem->setName($item->getName());
-    $this->manager->persist($lineItem);
-    $this->manager->flush();
-    $order->addItem($lineItem);
   }
 
   /**
