@@ -13,22 +13,22 @@ class SizeFixtures extends Fixture{
     $sizes = [
       [
         'name' => 'S',
-        'type' => 'S',
+        'type' => 'Size',
         'price' => 200,
       ],
       [
         'name' => 'M',
-        'type' => 'M',
+        'type' => 'Size',
         'price' => 400,
       ],
       [
         'name' => 'L',
-        'type' => 'L',
+        'type' => 'Size',
         'price' => 800,
       ],
       [
         'name' => 'XL',
-        'type' => 'XL',
+        'type' => 'Size',
         'price' => 1000,
       ],
     ];

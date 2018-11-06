@@ -30,7 +30,7 @@ class ToppingFixtures extends Fixture{
     foreach ($main as $item) {
       $topping = new Topping();
       $topping->setName($item);
-      $topping->setType('main');
+      $topping->setType('MainTopping');
       $topping->setPrice(500);
       $manager->persist($topping);
     }
@@ -38,7 +38,7 @@ class ToppingFixtures extends Fixture{
     foreach ($secondary as $item) {
       $topping = new Topping();
       $topping->setName($item);
-      $topping->setType('secondary');
+      $topping->setType('SecondaryTopping');
       $topping->setPrice(200);
       $manager->persist($topping);
     }
