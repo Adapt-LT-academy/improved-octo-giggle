@@ -32,28 +32,28 @@ class OrderFixtures extends Fixture implements DependentFixtureInterface{
       * @var Topping $mainTopping
       */
      $mainTopping = $this->getProduct(Topping::class, ['name' => 'Ham']);
-     $order->addLineItemToOrder($manager, $mainTopping);
+     $order->addLineItemToOrder($mainTopping);
 
      /**
       * @var Topping $secondaryTopping
       */
      $secondaryTopping = $this->getProduct(Topping::class, ['name' => 'Olive']);
-     $order->addLineItemToOrder($manager, $secondaryTopping);
+     $order->addLineItemToOrder($secondaryTopping);
 
      /**
       * @var Size $size
       */
      $size = $this->getProduct(Size::class, ['name' => 'M']);
-     $order->addLineItemToOrder($manager, $size);
+     $order->addLineItemToOrder($size);
 
      /**
       * @var Drink $drink
       */
      $drink = $this->getProduct(Drink::class, ['name' => 'Coke', 'size' => '2']);
-     $order->addLineItemToOrder($manager, $drink);
+     $order->addLineItemToOrder($drink);
 
      $drink = $this->getProduct(Drink::class, ['name' => 'RedBull', 'size' => '2']);
-     $order->addLineItemToOrder($manager, $drink);
+     $order->addLineItemToOrder($drink);
 
      $order->calculateTotal();
      $manager->persist($order);
