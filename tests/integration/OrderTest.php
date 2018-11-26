@@ -65,10 +65,10 @@ class OrderTest extends KernelTestCase
     ;
 
     $order = new Order();
-    $order->setMainTopping($main);
-    $order->setSecondaryTopping($secondary);
-    $order->setSize($size);
-    $order->setDrink($drink);
+    $order->addLineItemToOrder($main);
+    $order->addLineItemToOrder($secondary);
+    $order->addLineItemToOrder($size);
+    $order->addLineItemToOrder($drink);
     $order->calculateTotal();
 
     $this->assertEquals(1500, $order->getTotal());

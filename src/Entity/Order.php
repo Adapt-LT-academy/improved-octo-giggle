@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,32 +23,10 @@ class Order
     protected $id;
 
     /**
-     * One Order has One main Topping.
-     * @ORM\OneToOne(targetEntity="Topping")
-     * @ORM\JoinColumn(name="main_topping_id", referencedColumnName="id")
+     * One Order has Many Line Items.
+     * @ORM\OneToMany(targetEntity="LineItem", mappedBy="order", cascade={"persist"})
      */
-    protected $mainTopping;
-
-    /**
-     * One Order has One secondary Topping.
-     * @ORM\OneToOne(targetEntity="Topping")
-     * @ORM\JoinColumn(name="secondary_topping_id", referencedColumnName="id")
-     */
-    protected $secondaryTopping;
-
-    /**
-     * One Order has One Size.
-     * @ORM\OneToOne(targetEntity="Size")
-     * @ORM\JoinColumn(name="size_id", referencedColumnName="id")
-     */
-    protected $size;
-
-    /**
-     * One Order has One Drink.
-     * @ORM\OneToOne(targetEntity="Drink")
-     * @ORM\JoinColumn(name="drink_id", referencedColumnName="id")
-     */
-    protected $drink;
+    protected $items;
 
     /**
      * @var int
@@ -54,6 +34,10 @@ class Order
      * @ORM\Column(type="integer", length=11)
      */
     protected $total = 0;
+
+    public function __construct() {
+        $this->items = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * @return int
@@ -76,81 +60,21 @@ class Order
     }
 
     /**
-     * @return Topping
+     * @return ArrayCollection
      */
-    public function getMainTopping(): ?Topping
+    public function getItems(): ?ArrayCollection
     {
-        return $this->mainTopping;
+      return $this->items;
     }
 
     /**
-     * @param Topping $mainTopping
+     * @param LineItem $item
      *
      * @return $this
      */
-    public function setMainTopping(Topping $mainTopping): self
+    public function addItem(LineItem $item): self
     {
-        $this->mainTopping = $mainTopping;
-
-        return $this;
-    }
-
-    /**
-     * @return Topping
-     */
-    public function getSecondaryTopping(): ?Topping
-    {
-      return $this->secondaryTopping;
-    }
-
-    /**
-     * @param Topping $secondaryTopping
-     *
-     * @return $this
-     */
-    public function setSecondaryTopping(Topping $secondaryTopping): self
-    {
-      $this->secondaryTopping = $secondaryTopping;
-
-      return $this;
-    }
-
-    /**
-     * @return Size
-     */
-    public function getSize(): ?Size
-    {
-      return $this->size;
-    }
-
-    /**
-     * @param Size $size
-     *
-     * @return $this
-     */
-    public function setSize(Size $size): self
-    {
-      $this->size = $size;
-
-      return $this;
-    }
-
-    /**
-     * @return Drink
-     */
-    public function getDrink(): ?Drink
-    {
-      return $this->drink;
-    }
-
-    /**
-     * @param Drink $drink
-     *
-     * @return $this
-     */
-    public function setDrink(Drink $drink): self
-    {
-      $this->drink = $drink;
+      $this->items[] = $item;
 
       return $this;
     }
@@ -176,20 +100,29 @@ class Order
     }
 
     /**
+     * Add line item to order.
+     *
+     * @param \App\Entity\Item $item
+     *   Item to add in order.
+     */
+    public function addLineItemToOrder(Item $item): void {
+        $lineItem = new LineItem();
+        $lineItem->setSize($item->getSize());
+        $lineItem->setType($item->getType());
+        $lineItem->setPrice($item->getPrice());
+        $lineItem->setName($item->getName());
+        $lineItem->setOrder($this);
+        $this->addItem($lineItem);
+    }
+
+    /**
      * Calculate and set order total using it's products.
      */
     public function calculateTotal() {
-      $mainTopping = $this->getMainTopping();
-      $secondaryTopping = $this->getSecondaryTopping();
-      $size = $this->getSize();
-      $drink = $this->getDrink();
-
-      $total =
-        $mainTopping->getPrice() +
-        $secondaryTopping->getPrice() +
-        $size->getPrice() +
-        $drink->getPrice();
-
+      $total = 0;
+      foreach ($this->items as $item) {
+          $total = bcadd($total, $item->getPrice());
+      }
       $this->setTotal($total);
     }
 
