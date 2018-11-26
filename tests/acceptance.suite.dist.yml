@@ -8,5 +8,6 @@ actor: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://localhost:8000
+            url: http://127.0.0.1/
+            #url: http://nginx/ to run from docker container
         - \App\Tests\Helper\Acceptance
