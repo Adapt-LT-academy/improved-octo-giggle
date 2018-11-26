@@ -68,7 +68,7 @@ jobs:
         name: Run codeception API tests
         command: |
           vendor/bin/codecept run --steps --coverage --coverage-xml
-          cp tests/codeception/_output/api.remote.coverage.xml clover.xml
+          cp tests/_output/coverage.xml clover.xml
           ./tmp/cc-test-reporter format-coverage --input-type clover -o tmp/codeclimate.total.json coverage/api/.resultset.json
     - run:
         name: Upload coverage results to Code Climate
