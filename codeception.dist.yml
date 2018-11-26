@@ -20,3 +20,4 @@ coverage:
     exclude:
         - src/Migrations/*
         - src/DataFixtures/*
+        - Kernel.php
