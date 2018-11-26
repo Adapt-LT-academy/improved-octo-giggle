@@ -3,7 +3,10 @@ parameters:
     # This allows you to run cache:warmup even if your
     # environment variables are not available yet.
     # You should not need to change this value.
-    env(DATABASE_URL): ''
+    env(DB_HOST): ''
+    env(DB_NAME): ''
+    env(DB_USER): ''
+    env(DB_PASSWORD): ''
 
 doctrine:
     dbal:
@@ -15,7 +18,10 @@ doctrine:
             charset: utf8mb4
             collate: utf8mb4_unicode_ci
 
-        url: '%env(resolve:DATABASE_URL)%'
+        host: '%env(resolve:DB_HOST)%'
+        dbname: '%env(resolve:DB_NAME)%'
+        user: '%env(resolve:DB_USER)%'
+        password: '%env(resolve:DB_PASSWORD)%'
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore

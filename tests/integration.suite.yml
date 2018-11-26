@@ -1,0 +1,4 @@
+actor: IntegrationTester
+modules:
+    enabled:
+        - \App\Tests\Helper\Integration
