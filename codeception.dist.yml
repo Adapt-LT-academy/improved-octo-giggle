@@ -14,7 +14,7 @@ params:
 coverage:
     enabled: true
     remote: true
-    remote_config: codeception.yml
+    remote_config: codeception.dist.yml
     include:
         - src/*
     exclude:
