@@ -1,7 +1,7 @@
 ---
 version: 2
 jobs:
-  api-tests:
+  tests:
     docker:
     - image: wodby/php:7.2-dev-4.5.3
       environment:
@@ -73,3 +73,8 @@ jobs:
     - run:
         name: Upload coverage results to Code Climate
         command: ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - tests
