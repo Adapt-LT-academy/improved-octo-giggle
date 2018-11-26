@@ -59,17 +59,17 @@ jobs:
         name: Add fixtures
         command: bin/console doctrine:fixtures:load -n
     - run:
-        name: Run codeception API tests
-        command: |
-          vendor/bin/codecept run --steps --coverage --coverage-xml
-          cp tests/codeception/_output/api.remote.coverage.xml clover.xml
-          ./tmp/cc-test-reporter format-coverage --input-type clover -o tmp/codeclimate.total.json coverage/api/.resultset.json
-    - run:
         name:  Download cc-test-reporter
         command: |
           mkdir -p tmp/
           curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
           chmod +x ./tmp/cc-test-reporter
+    - run:
+        name: Run codeception API tests
+        command: |
+          vendor/bin/codecept run --steps --coverage --coverage-xml
+          cp tests/codeception/_output/api.remote.coverage.xml clover.xml
+          ./tmp/cc-test-reporter format-coverage --input-type clover -o tmp/codeclimate.total.json coverage/api/.resultset.json
     - run:
         name: Upload coverage results to Code Climate
         command: ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
