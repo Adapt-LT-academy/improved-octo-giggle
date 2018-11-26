@@ -1,0 +1,12 @@
+actor: ApiTester
+modules:
+    enabled:
+        - \App\Tests\Helper\Api
+        - REST:
+            url: http://127.0.0.1/
+            #url: http://nginx/ to run from docker container
+            depends: PhpBrowser
+        - Symfony:
+            part: SERVICES
+            app_path: 'src'
+        - Asserts

@@ -4,7 +4,7 @@
 namespace App\Tests\Api;
 
 
-use \ApiTester;
+use App\Tests\ApiTester;
 
 class PizzaOrderCest
 {

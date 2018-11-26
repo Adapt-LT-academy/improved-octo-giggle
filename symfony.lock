@@ -21,7 +21,7 @@
         }
     },
     "codeception/phpunit-wrapper": {
-        "version": "7.3.0"
+        "version": "7.3.2"
     },
     "codeception/stub": {
         "version": "2.0.4"
@@ -267,7 +267,7 @@
         "version": "1.0.0"
     },
     "symfony/browser-kit": {
-        "version": "v4.1.4"
+        "version": "v4.1.7"
     },
     "symfony/cache": {
         "version": "v4.1.4"
@@ -285,7 +285,7 @@
         }
     },
     "symfony/css-selector": {
-        "version": "v4.1.4"
+        "version": "v4.1.7"
     },
     "symfony/debug": {
         "version": "v4.1.4"
@@ -297,7 +297,7 @@
         "version": "v4.1.4"
     },
     "symfony/dom-crawler": {
-        "version": "v4.1.4"
+        "version": "v4.1.7"
     },
     "symfony/dotenv": {
         "version": "v4.1.4"
