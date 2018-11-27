@@ -15,12 +15,12 @@
         "symfony/orm-pack": "^1.0",
         "symfony/twig-bundle": "*",
         "symfony/web-server-bundle": "*",
-        "symfony/yaml": "*"
+        "symfony/yaml": "*",
+        "doctrine/doctrine-fixtures-bundle": "^3.0"
     },
     "require-dev": {
         "codeception/c3": "^2.4",
         "codeception/codeception": "^2.5",
-        "doctrine/doctrine-fixtures-bundle": "^3.0",
         "mockery/mockery": "^1.1",
         "phpunit/phpunit": "^7.3",
         "symfony/dotenv": "*"
