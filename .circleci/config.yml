@@ -44,7 +44,7 @@ jobs:
             echo -n .
             sleep 1
           done
-          echo Failed waiting for Postgres && exit 1
+          echo Failed waiting for mysql && exit 1
     - run:
         name: Add database migrations
         command: bin/console doctrine:schema:create -n
@@ -76,8 +76,23 @@ jobs:
         command: |
           ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 3 -o tmp/codeclimate.total.json
           ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
+  deploy:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 workflows:
   version: 2
   build-deploy:
     jobs:
       - tests
+      - deploy:
+          requires:
+            - tests
+          filters:
+            branches:
+              only: master
