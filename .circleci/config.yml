@@ -1,71 +1,7 @@
 ---
 version: 2
 jobs:
-  unit-tests:
-    docker:
-    - image: wodby/php:7.2-dev-4.5.3
-      environment:
-        DB_HOST: mariadb
-        DB_USER: botman
-        DB_PASSWORD: botman
-        DB_NAME: botman
-        ## Read instructions at https://wodby.com/stacks/php/docs/local/xdebug/
-        PHP_XDEBUG: 1
-        PHP_XDEBUG_DEFAULT_ENABLE: 1
-        PHP_XDEBUG_REMOTE_CONNECT_BACK: 0
-        PHP_IDE_CONFIG: serverName=PHPSTORM
-        PHP_XDEBUG_REMOTE_HOST: 172.17.0.1 # Linux
-        DATABASE_URL: mysql://botman:botman@mariadb:3306/botman
-    - image: circleci/mysql:5.7-ram
-      environment:
-        MYSQL_ROOT_PASSWORD: botman
-        MYSQL_DATABASE: botman
-        MYSQL_USER: botman
-        MYSQL_PASSWORD: botman
-    steps:
-    - checkout
-    - restore_cache:
-        keys:
-        - composer-v1-{{ checksum "composer.json" }}
-    - run: composer install
-    - save_cache:
-        key: composer-v1-{{ checksum "composer.json" }}
-        paths:
-        - vendor
-    - run: echo 127.0.0.1 mariadb | sudo tee -a /etc/hosts
-    - run:
-        name: Waiting for Mysql to be ready
-        command: |
-          for i in `seq 1 10`;
-          do
-            nc -z mariadb 3306 && echo Success && exit 0
-            echo -n .
-            sleep 1
-          done
-          echo Failed waiting for Postgres && exit 1
-    - run:
-        name: Add database migrations
-        command: bin/console doctrine:schema:create -n
-    - run:
-        name: Add fixtures
-        command: bin/console doctrine:fixtures:load -n
-    - run:
-        name:  Download cc-test-reporter
-        command: |
-          mkdir -p tmp/
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
-          chmod +x ./tmp/cc-test-reporter
-    - run:
-        name: Run unit tests
-        command: |
-          vendor/bin/phpunit --verbose --debug --coverage-clover clover.xml
-          ./tmp/cc-test-reporter format-coverage --input-type clover -o tmp/codeclimate.unit.json coverage/unit/.resultset.json
-    - persist_to_workspace:
-        root: tmp
-        paths:
-        - codeclimate.unit.json
-        - cc-test-reporter
-  api-tests:
+  tests:
     docker:
     - image: wodby/php:7.2-dev-4.5.3
       environment:
@@ -108,7 +44,7 @@ jobs:
             echo -n .
             sleep 1
           done
-          echo Failed waiting for Postgres && exit 1
+          echo Failed waiting for mysql && exit 1
     - run:
         name: Add database migrations
         command: bin/console doctrine:schema:create -n
@@ -123,22 +59,40 @@ jobs:
         name: Add fixtures
         command: bin/console doctrine:fixtures:load -n
     - run:
+        name:  Download cc-test-reporter
+        command: |
+          mkdir -p tmp/
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./tmp/cc-test-reporter
+          chmod +x ./tmp/cc-test-reporter
+    - run:
         name: Run codeception API tests
         command: |
           vendor/bin/codecept run --steps --coverage --coverage-xml
-          cp tests/codeception/_output/api.remote.coverage.xml clover.xml
-          ./tmp/cc-test-reporter format-coverage --input-type clover -o tmp/codeclimate.api.json coverage/api/.resultset.json
+          ./tmp/cc-test-reporter format-coverage tests/_output/coverage.xml --input-type clover -o tmp/codeclimate.local.json coverage/api/.resultset.json
+          ./tmp/cc-test-reporter format-coverage tests/_output/App.Tests.acceptance.remote.coverage.xml --input-type clover -o tmp/codeclimate.acceptance.json coverage/api/.resultset.json
+          ./tmp/cc-test-reporter format-coverage tests/_output/App.Tests.api.remote.coverage.xml --input-type clover -o tmp/codeclimate.api.json coverage/api/.resultset.json
     - run:
         name: Upload coverage results to Code Climate
         command: |
-          ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 2 -o tmp/codeclimate.total.json
+          ./tmp/cc-test-reporter sum-coverage tmp/codeclimate.*.json -p 3 -o tmp/codeclimate.total.json
           ./tmp/cc-test-reporter upload-coverage -i tmp/codeclimate.total.json
-
+  deploy:
+    docker:
+      - image: buildpack-deps:trusty
+    steps:
+      - checkout
+      - run:
+          name: Deploy Master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git master
 workflows:
   version: 2
   build-deploy:
     jobs:
-    - unit-tests
-    - api-tests:
-        requires:
-        - unit-tests
+      - tests
+      - deploy:
+          requires:
+            - tests
+          filters:
+            branches:
+              only: master

@@ -21,7 +21,7 @@
         }
     },
     "codeception/phpunit-wrapper": {
-        "version": "7.3.0"
+        "version": "7.3.2"
     },
     "codeception/stub": {
         "version": "2.0.4"
@@ -266,8 +266,17 @@
     "spatie/macroable": {
         "version": "1.0.0"
     },
+    "symfony/apache-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "c82bead70f9a4f656354a193df7bf0ca2114efa0"
+        }
+    },
     "symfony/browser-kit": {
-        "version": "v4.1.4"
+        "version": "v4.1.7"
     },
     "symfony/cache": {
         "version": "v4.1.4"
@@ -285,7 +294,7 @@
         }
     },
     "symfony/css-selector": {
-        "version": "v4.1.4"
+        "version": "v4.1.7"
     },
     "symfony/debug": {
         "version": "v4.1.4"
@@ -297,7 +306,7 @@
         "version": "v4.1.4"
     },
     "symfony/dom-crawler": {
-        "version": "v4.1.4"
+        "version": "v4.1.7"
     },
     "symfony/dotenv": {
         "version": "v4.1.4"

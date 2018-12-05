@@ -1,0 +1,23 @@
+namespace: App\Tests
+paths:
+    tests: tests
+    output: tests/_output
+    data: tests/_data
+    support: tests/_support
+    envs: tests/_envs
+actor_suffix: Tester
+extensions:
+    enabled:
+        - Codeception\Extension\RunFailed
+params:
+    - .env
+coverage:
+    enabled: true
+    remote: true
+    remote_config: codeception.dist.yml
+    include:
+        - src/*
+    exclude:
+        - src/Migrations/*
+        - src/DataFixtures/*
+        - Kernel.php
